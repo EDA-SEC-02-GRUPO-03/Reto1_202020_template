@@ -37,6 +37,19 @@ from Sorting import shellsort as sort
 
 from time import process_time 
 
+def printMenu():
+    """
+    Imprime el menu de opciones
+    """
+    print("\nBienvenido")
+    print("1- Cargar Datos")
+    print("2- Contar los elementos de la Lista")
+    print("3- Contar elementos filtrados por palabra clave")
+    print("4- Consultar elementos a partir de dos listas")
+    print("5- Clasificar peliculas por votación")
+    print("6- Consultar la información de un actor")
+    print("0- Salir")
+
 def less(element1, element2):
     if float(element1['vote_average']) < float(element2['vote_average']):
         return True
@@ -46,6 +59,9 @@ def greater(element1, element2):
     if float(element1['vote_average']) > float(element2['vote_average']):
         return True
     return False
+
+def compareRecordIds():
+    pass
 
 def loadCSVFile (file1, file2, sep=";"):
     """
@@ -83,20 +99,6 @@ def loadCSVFile (file1, file2, sep=";"):
     t1_stop = process_time() #tiempo final
     print("Tiempo de ejecución ",t1_stop-t1_start," segundos")
     return lst1, lst2
-
-
-def printMenu():
-    """
-    Imprime el menu de opciones
-    """
-    print("\nBienvenido")
-    print("1- Cargar Datos")
-    print("2- Contar los elementos de la Lista")
-    print("3- Contar elementos filtrados por palabra clave")
-    print("4- Consultar elementos a partir de dos listas")
-    print("5- Clasificar peliculas por votación")
-    print("6- Consultar la información de un actor")
-    print("0- Salir")
 
 def countElementsFilteredByColumn(criteria, column, lst):
     """
