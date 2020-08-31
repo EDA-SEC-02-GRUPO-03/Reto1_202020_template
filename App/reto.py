@@ -38,7 +38,6 @@ from Sorting import selectionsort as sel
 from Sorting import insertionsort as ins 
 from time import process_time 
 
-
 def printMenu():
     """
     Imprime el menu de opciones
@@ -62,17 +61,23 @@ def greaterfunction(element1, element2, criteria):
         return True
     return False
 
+def compareRecordIds():
+    pass
 
-def compareRecordIds (recordA, recordB):
-    if int(recordA['id']) == int(recordB['id']):
-        return 0
-    elif int(recordA['id']) > int(recordB['id']):
-        return 1
-    return -1
-
-
-
-def loadCSVFile (file1,file2, sep=";"):
+def loadCSVFile (file1, file2, sep=";"):
+    """
+    Carga un archivo csv a una lista
+    Args:
+        file
+            Archivo csv del cual se importaran los datos
+        sep = ";"
+            Separador utilizado para determinar cada objeto dentro del archivo
+        Try:
+        Intenta cargar el archivo CSV a la lista que se le pasa por parametro,
+        si encuentra algun error
+        Borra la lista e informa al usuario
+    Returns: None  
+    """
     lst1 = lt.newList("ARRAY_LIST") #Usando implementacion arraylist
     #lst1 = lt.newList() #Usando implementacion linkedlist
     lst2 = lt.newList("ARRAY_LIST") #Usando implementacion arraylist
@@ -149,6 +154,30 @@ def req2 (lst, function, criteria, n):
     print('El tiempo fue de ', t1_stop-t1_start, ' segundos')
     return final
 
+def req4(name, lst1, lst2):
+    t1_start = process_time() #tiempo inicial
+    counter = 0
+    nPart = 0
+    nombres = []
+    directores = []
+    sumProm = 0
+    for i in range(1, lt.size(lst2)):
+        counter += 1
+        elemento = lt.getElement(lst2, i)
+        actores = (elemento['actor1_name'] +
+         elemento['actor2_name'] + elemento['actor3_name'] +
+         elemento['actor4_name'] + elemento['actor5_name']).lower()
+        if name.lower() in actores:
+            nPart += 1
+            nombres.append((lt.getElement(lst1, counter))['title'])
+            directores.append(elemento['director_name'])
+            sumProm += float((lt.getElement(lst1, counter))['vote_average'])
+    if nPart == 0:
+        print('\nActor no encontrado\n')
+        t1_stop = process_time() #tiempo final
+        print("Tiempo de ejecución ",t1_stop-t1_start," segundos\n")
+        pass
+
 def req5(lst, criteria1, column1, column2, column3):
     if lst['size'] == 0:
         print ('Lista vacía')
@@ -183,12 +212,6 @@ def req6 (lst1, criteria1, column1, function, criteriaf, n):
     listado = req2 (porgenero, function, criteriaf, n)
     return listado
 
-def loadMovies ():
-    lst = loadCSVFile("theMoviesdb/movies-small.csv",compareRecordIds) 
-    print("Datos cargados, " + str(lt.size(lst)) + " elementos cargados")
-    return lst
-
-
 def main():
     """
     Método principal del programa, se encarga de manejar todos los metodos adicionales creados
@@ -219,15 +242,24 @@ def main():
                 
 
             elif int(inputs[0])==4: #opcion 4
-                
-
+                if lista1==None or lista1['size']==0: #obtener la longitud de la lista
+                    print("La lista esta vacía")
+                else:
+                    name = input('\nIngrese el nombre del actor a consultar:\n')
+                    result = req4(name, lista1, lista2)
+                    if result[1] == 0:
+                        pass
+                    else:
+                        print('Las películas en las que ha participado')
+                        print('-' * 40)
+                        for i in result[0]:
+                            print('-',i)
+                        print('\n', name, 'ha participado en', result[1], 'peliculas')
+                        print('El promedio de las películas es:', result[2])
+                        print('El director con quien más ha colaborado es:', result[3])
             elif int(inputs[0])==5: #opcion 5
-                
-
             elif int(inputs[0])==6: #opcion 6
-               
-
-
+            elif int(inputs[0])==7: #opcion 7
             elif int(inputs[0])==0: #opcion 0, salir
                 sys.exit(0)
                 
