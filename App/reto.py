@@ -178,6 +178,15 @@ def req4(name, lst1, lst2):
         t1_stop = process_time() #tiempo final
         print("Tiempo de ejecución ",t1_stop-t1_start," segundos\n")
         pass
+    else:
+        prom = sumProm / nPart
+        direct = 'Batman'
+        for i in directores:
+            if directores.count(i) >= directores.count(direct):
+                direct = i
+        t1_stop = process_time() #tiempo final
+        print("Tiempo de ejecución ",t1_stop-t1_start," segundos")
+    return (nombres, nPart, round(prom, 1), direct)
 
 def req5(lst, criteria1, column1, column2, column3):
     if lst['size'] == 0:
