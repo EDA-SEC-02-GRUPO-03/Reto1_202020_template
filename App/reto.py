@@ -52,7 +52,15 @@ def printMenu():
     print("6- Crear ranking")
     print("0- Salir")
 
+def lessfunction(element1, element2, criteria):
+    if float(element1[criteria]) < float(element2[criteria]):
+        return True
+    return False
 
+def greaterfunction(element1, element2, criteria):
+    if float(element1[criteria]) > float(element2[criteria]):
+        return True
+    return False
 
 
 def compareRecordIds (recordA, recordB):
@@ -90,7 +98,8 @@ def loadCSVFile (file1,file2, sep=";"):
     print("Tiempo de ejecución ",t1_stop-t1_start," segundos")
     return (lst1,lst2) 
 
-def req1(lst1, lst2, criteria1, column1, criteria2, column2):
+
+def req1 (lst1, lst2, criteria1, column1, criteria2, column2):
 
     if lst1['size'] == 0 or lst2['size'] == 0:
         print ('Lista vacía')
@@ -139,6 +148,40 @@ def req2 (lst, function, criteria, n):
     t1_stop = process_time()
     print('El tiempo fue de ', t1_stop-t1_start, ' segundos')
     return final
+
+def req5(lst, criteria1, column1, column2, column3):
+    if lst['size'] == 0:
+        print ('Lista vacía')
+    else:
+        t1_start = process_time()
+        iterator1 = it.newIterator(lst)
+        nombres = lt.newList('ARRAY_LIST')
+        votos = lt.newList('ARRAY_LIST')
+        counter = 0
+        while  it.hasNext(iterator1):
+            element = it.next(iterator1)
+            if criteria1.lower() in element[column1].lower(): #filtrar por palabra clave 
+                lt.addLast(nombres, element[column2])
+                lt.addLast(votos, element[column3])
+                counter += 1
+        suma = 0
+        for i in range(lt.size(votos)):
+            suma += float(lt.getElement(votos,i))
+        t1_stop = process_time()
+        tiempo = t1_stop-t1_start
+        return nombres['elements'],counter,suma/lt.size(votos),tiempo
+
+def req6 (lst1, criteria1, column1, function, criteriaf, n):        
+    porgenero = lt.newList("ARRAY_LIST")
+    iterator = it.newIterator(lst1)
+    lt.addFirst(porgenero, '')
+    while it.hasNext(iterator):
+        element = it.next(iterator)
+        if criteria1.lower() in element[column1].lower():
+            lt.addLast(porgenero, element)
+    lt.removeFirst(porgenero)
+    listado = req2 (porgenero, function, criteriaf, n)
+    return listado
 
 def loadMovies ():
     lst = loadCSVFile("theMoviesdb/movies-small.csv",compareRecordIds) 
