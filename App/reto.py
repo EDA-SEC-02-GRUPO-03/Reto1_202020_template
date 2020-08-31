@@ -33,9 +33,10 @@ import csv
 from ADT import list as lt
 from DataStructures import listiterator as it
 from DataStructures import liststructure as lt
-
+from Sorting import shellsort as sh
+from Sorting import selectionsort as sel 
+from Sorting import insertionsort as ins 
 from time import process_time 
-
 
 
 def printMenu():
@@ -63,19 +64,81 @@ def compareRecordIds (recordA, recordB):
 
 
 
-def loadCSVFile (file, cmpfunction):
-    lst=lt.newList("ARRAY_LIST", cmpfunction)
+def loadCSVFile (file1,file2, sep=";"):
+    lst1 = lt.newList("ARRAY_LIST") #Usando implementacion arraylist
+    #lst1 = lt.newList() #Usando implementacion linkedlist
+    lst2 = lt.newList("ARRAY_LIST") #Usando implementacion arraylist
+    #lst2 = lt.newList() #Usando implementacion linkedlist
+    print("Cargando archivos ....")
+    t1_start = process_time() #tiempo inicial
     dialect = csv.excel()
-    dialect.delimiter=";"
+    dialect.delimiter=sep
     try:
-        with open(  cf.data_dir + file, encoding="utf-8") as csvfile:
-            row = csv.DictReader(csvfile, dialect=dialect)
-            for elemento in row: 
-                lt.addLast(lst,elemento)
-    except:
-        print("Hubo un error con la carga del archivo")
-    return lst
+        with open(file1, encoding="utf-8") as csvfile:
+            spamreader = csv.DictReader(csvfile, dialect=dialect)
+            for row in spamreader: 
+                lt.addLast(lst1,row)
+        with open(file2, encoding="utf-8") as csvfile:
+            spamreader = csv.DictReader(csvfile, dialect=dialect)
+            for row in spamreader: 
+                lt.addLast(lst2,row)
 
+    except:
+        print("Hubo un error con la carga de los archivos")
+
+    t1_stop = process_time() #tiempo final
+    print("Tiempo de ejecución ",t1_stop-t1_start," segundos")
+    return (lst1,lst2) 
+
+def req1(lst1, lst2, criteria1, column1, criteria2, column2):
+
+    if lst1['size'] == 0 or lst2['size'] == 0:
+        print ('Lista vacía')
+    else:
+        t1_start = process_time()
+        counter = 0
+        iterator1 = it.newIterator(lst1)
+        i = 0
+        positions = []
+        while  it.hasNext(iterator1):
+            element = it.next(iterator1)
+            if criteria1.lower() in element[column1].lower(): #filtrar por palabra clave 
+                positions.append(i)
+            i+=1
+        for i in positions:
+            element = lt.getElement(lst2 ,i)
+            if float(element[column2]) >= float(criteria2):
+                counter += 1            
+    t1_stop = process_time()
+    print('EL tiempo es de ', t1_stop-t1_start, ' segundos')
+    return counter
+
+def req2 (lst, function, criteria, n):
+    
+    t1_start = process_time()
+    result = lt.newList('ARRAY_LIST')
+    nombres = lt.newList('ARRAY_LIST')
+    votos = lt.newList('ARRAY_LIST')
+    sh.shellSort(lst, function, criteria)
+    #sel.selectionSort(lst, function, criteria)       
+    #ins.insertionSort(lst,function,criteria)
+
+    for i in range(n+1):
+        lt.addLast(result,lt.getElement(lst, i))    
+    iterator=it.newIterator(result)
+    while  it.hasNext(iterator):
+        element = it.next(iterator)
+        lt.addLast(nombres, element['title'])
+        lt.addLast(votos, element[criteria])
+    final = lt.newList('ARRAY_LIST')
+    for i in range(n+1):
+        lt.addLast(final, (lt.getElement(nombres, i),lt.getElement(votos,i)))
+    lt.addLast(final, lt.getElement(final, 0))
+    lt.removeFirst(final)
+    lt.removeFirst(final)
+    t1_stop = process_time()
+    print('El tiempo fue de ', t1_stop-t1_start, ' segundos')
+    return final
 
 def loadMovies ():
     lst = loadCSVFile("theMoviesdb/movies-small.csv",compareRecordIds) 
@@ -92,29 +155,34 @@ def main():
     Return: None 
     """
 
-
+    listaD = lt.newList()   # lista de detalles
+    listaC = lt.newList()   # lista de detalles
     while True:
         printMenu() #imprimir el menu de opciones en consola
         inputs =input('Seleccione una opción para continuar\n') #leer opción ingresada
         if len(inputs)>0:
 
             if int(inputs[0])==1: #opcion 1
-                lstmovies = loadMovies()
+                datos = loadCSVFile("Data\AllMoviesDetailsCleaned.csv","Data\AllMoviesCastingRaw.csv") 
+                listaD = datos[0]
+                listaC = datos[1]
+                print("Datos de detalles cargados, ",listaD['size']," elementos cargados")
+                print("Datos de casting cargados, ",listaC['size']," elementos cargados")    
 
             elif int(inputs[0])==2: #opcion 2
-                pass
+               
 
             elif int(inputs[0])==3: #opcion 3
-                pass
+                
 
             elif int(inputs[0])==4: #opcion 4
-                pass
+                
 
-            elif int(inputs[0])==3: #opcion 5
-                pass
+            elif int(inputs[0])==5: #opcion 5
+                
 
-            elif int(inputs[0])==4: #opcion 6
-                pass
+            elif int(inputs[0])==6: #opcion 6
+               
 
 
             elif int(inputs[0])==0: #opcion 0, salir
