@@ -43,13 +43,14 @@ def printMenu():
     Imprime el menu de opciones
     """
     print("\nBienvenido")
-    print("1- Cargar Datos")
+    print("0- Cargar Datos")
+    print('1- Buenas películas por director')
     print("2- Ranking de peliculas")
     print("3- Conocer un director")
     print("4- Conocer un actor")
     print("5- Entender un genero")
     print("6- Crear ranking")
-    print("0- Salir")
+    print("7- Salir")
 
 def lessfunction(element1, element2, criteria):
     if float(element1[criteria]) < float(element2[criteria]):
@@ -220,33 +221,46 @@ def main():
     Args: None
     Return: None 
     """
-
-    listaD = lt.newList()   # lista de detalles
-    listaC = lt.newList()   # lista de detalles
+    listaD = lt.newList()   # se require usar lista definida
+    listaC = lt.newList() 
     while True:
         printMenu() #imprimir el menu de opciones en consola
         inputs =input('Seleccione una opción para continuar\n') #leer opción ingresada
         if len(inputs)>0:
-
             if int(inputs[0])==1: #opcion 1
-                datos = loadCSVFile("Data\AllMoviesDetailsCleaned.csv","Data\AllMoviesCastingRaw.csv") 
+                datos = loadCSVFile("Data\AllMoviesDetailsCleaned.csv","Data\AllMoviesCastingRaw.csv") #llamar funcion cargar datos
                 listaD = datos[0]
                 listaC = datos[1]
                 print("Datos de detalles cargados, ",listaD['size']," elementos cargados")
                 print("Datos de casting cargados, ",listaC['size']," elementos cargados")    
 
             elif int(inputs[0])==2: #opcion 2
-               
+                gb1 = int(input('Más Votos (1) o Menos Votos (0):\n'))
+                n1 = int(input('¿Cuántas películas?\n'))
+                gb2 = int(input('Mejor Promedio (1) o Peor Promedio (0):\n'))
+                n2 = int(input('¿Cuántas películas?\n'))
+                if gb1 == 1:
+                    function1 = greaterfunction
+                elif gb1 == 0:
+                    function1 = lessfunction
+                if gb2 == 1:
+                    function2 = greaterfunction
+                elif gb2 == 0: 
+                    function2 = lessfunction
+                resultados1 = req2(listaD, function1, 'vote_count', n1)
+                resultados2 = req2(listaD, function2, 'vote_average', n2)
+                print('Por votos:\n',resultados1 )
+                print('Por promedio:\n', resultados2)
 
             elif int(inputs[0])==3: #opcion 3
-                
+                pass
 
             elif int(inputs[0])==4: #opcion 4
-                if lista1==None or lista1['size']==0: #obtener la longitud de la lista
+                if listaD==None or listaD['size']==0: #obtener la longitud de la lista
                     print("La lista esta vacía")
                 else:
                     name = input('\nIngrese el nombre del actor a consultar:\n')
-                    result = req4(name, lista1, lista2)
+                    result = req4(name, listaD, listaC)
                     if result[1] == 0:
                         pass
                     else:
@@ -257,11 +271,42 @@ def main():
                         print('\n', name, 'ha participado en', result[1], 'peliculas')
                         print('El promedio de las películas es:', result[2])
                         print('El director con quien más ha colaborado es:', result[3])
+                        
             elif int(inputs[0])==5: #opcion 5
+                genero = input('Ingrese el género:\n')
+                resultado = req5(listaD, genero, 'genres', 'title', 'vote_average' )
+                print ('Las películas de ', genero, 'son:\n', resultado[0])
+                print ('Hay ', resultado[1], ' películas de ', genero)
+                print('El promedio de votación es de ', resultado[2])
+                print('El tiempo fue de ', resultado[3], ' segundos')
+
             elif int(inputs[0])==6: #opcion 6
+                genero = input('Ingrese el género:\n')
+                gb1 = int(input('Más Votos (1) o Menos Votos (0):\n'))
+                n1 = int(input('¿Cuántas películas?\n'))
+                gb2 = int(input('Mejor Promedio (1) o Peor Promedio (0):\n'))
+                n2 = int(input('¿Cuántas películas?\n'))
+                if gb1 == 1:
+                    function1 = greaterfunction
+                elif gb1 == 0:
+                    function1 = lessfunction
+                if gb2 == 1:
+                    function2 = greaterfunction
+                elif gb2 == 0: 
+                    function2 = lessfunction
+                resultado1 = req6(listaD, genero, 'genres', function1, 'vote_count', n1)
+                resultado2 = req6(listaD, genero, 'genres', function2, 'vote_average', n2)
+                print('Por votos:\n',resultado1 )
+                print('Por promedio:\n', resultado2)
+
             elif int(inputs[0])==7: #opcion 7
+                director = input('Ingrese el nombre del director:\n')
+                pelis = req1(listaC, listaD, director, 'director_name', 6, 'vote_average')
+                print('El director ', director, ' tiene ', pelis, ' películas buenas.')
+
             elif int(inputs[0])==0: #opcion 0, salir
                 sys.exit(0)
+
                 
 if __name__ == "__main__":
     main()
