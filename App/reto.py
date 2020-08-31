@@ -157,7 +157,7 @@ def orderElementsByCriteria(function, column, lst, elements):
     print("Tiempo de ejecución ",t1_stop-t1_start," segundos\n")
     return NewList
 
-def ActorData(name, lst1, lst2):
+def req4(name, lst1, lst2):
     t1_start = process_time() #tiempo inicial
     counter = 0
     nPart = 0
@@ -264,7 +264,7 @@ def main():
                     print("La lista esta vacía")
                 else:
                     name = input('\nIngrese el nombre del actor a consultar:\n')
-                    result = ActorData(name, lista1, lista2)
+                    result = req4(name, lista1, lista2)
                     if result[1] == 0:
                         pass
                     else:
