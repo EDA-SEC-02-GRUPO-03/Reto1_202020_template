@@ -61,10 +61,10 @@ def loadCSVFile (file1, file2, sep=";"):
         Borra la lista e informa al usuario
     Returns: None  
     """
-    #lst = lt.newList("ARRAY_LIST") #Usando implementacion arraylist
-    lst1 = lt.newList() #Usando implementacion linkedlist
-    #lst2 = lt.newList("ARRAY_LIST") #Usando implementacion arraylist
-    lst2 = lt.newList() #Usando implementacion linkedlist
+    lst1 = lt.newList("ARRAY_LIST") #Usando implementacion arraylist
+    # lst1 = lt.newList() #Usando implementacion linkedlist
+    lst2 = lt.newList("ARRAY_LIST") #Usando implementacion arraylist
+    # lst2 = lt.newList() #Usando implementacion linkedlist
     print("Cargando archivo ....")
     t1_start = process_time() #tiempo inicial
     dialect = csv.excel()
@@ -164,12 +164,12 @@ def ActorData(name, lst1, lst2):
     nombres = []
     directores = []
     sumProm = 0
-    for i in range(lt.size(lst2)):
+    for i in range(1, lt.size(lst2)):
         counter += 1
         elemento = lt.getElement(lst2, i)
         actores = (elemento['actor1_name'] +
          elemento['actor2_name'] + elemento['actor3_name'] +
-         elemento['actor4_name'] + elemento['actor5_name']).lower().replace(' ','')
+         elemento['actor4_name'] + elemento['actor5_name']).lower()
         if name.lower() in actores:
             nPart += 1
             nombres.append((lt.getElement(lst1, counter))['title'])
@@ -179,6 +179,7 @@ def ActorData(name, lst1, lst2):
         print('\nActor no encontrado\n')
         t1_stop = process_time() #tiempo final
         print("Tiempo de ejecución ",t1_stop-t1_start," segundos\n")
+        pass
     else:
         prom = sumProm / nPart
         direct = 'Batman'
