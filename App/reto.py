@@ -43,14 +43,14 @@ def printMenu():
     Imprime el menu de opciones
     """
     print("\nBienvenido")
-    print("0- Cargar Datos")
-    print('1- Buenas películas por director')
+    print('1- Cargar Datos')
     print("2- Ranking de peliculas")
     print("3- Conocer un director")
     print("4- Conocer un actor")
     print("5- Entender un genero")
     print("6- Crear ranking")
-    print("7- Salir")
+    print("7- Mostrar datos por director")
+    print("0- Salir")
 
 def lessfunction(element1, element2, criteria):
     if float(element1[criteria]) < float(element2[criteria]):
@@ -237,7 +237,7 @@ def main():
         inputs =input('Seleccione una opción para continuar\n') #leer opción ingresada
         if len(inputs)>0:
             if int(inputs[0])==1: #opcion 1
-                datos = loadCSVFile("Data\AllMoviesDetailsCleaned.csv","Data\AllMoviesCastingRaw.csv") #llamar funcion cargar datos
+                datos = loadCSVFile("Data\\theMoviesdb\\AllMoviesDetailsCleaned.csv","Data\\theMoviesdb\\AllMoviesCastingRaw.csv") #llamar funcion cargar datos
                 listaD = datos[0]
                 listaC = datos[1]
                 print("Datos de detalles cargados, ",listaD['size']," elementos cargados")
