@@ -104,30 +104,6 @@ def loadCSVFile (file1, file2, sep=";"):
     print("Tiempo de ejecución ",t1_stop-t1_start," segundos")
     return (lst1,lst2) 
 
-
-def req1 (lst1, lst2, criteria1, column1, criteria2, column2):
-
-    if lst1['size'] == 0 or lst2['size'] == 0:
-        print ('Lista vacía')
-    else:
-        t1_start = process_time()
-        counter = 0
-        iterator1 = it.newIterator(lst1)
-        i = 0
-        positions = []
-        while  it.hasNext(iterator1):
-            element = it.next(iterator1)
-            if criteria1.lower() in element[column1].lower(): #filtrar por palabra clave 
-                positions.append(i)
-            i+=1
-        for i in positions:
-            element = lt.getElement(lst2 ,i)
-            if float(element[column2]) >= float(criteria2):
-                counter += 1            
-    t1_stop = process_time()
-    print('EL tiempo es de ', t1_stop-t1_start, ' segundos')
-    return counter
-
 def req2 (lst, function, criteria, n):
     
     t1_start = process_time()
@@ -167,10 +143,10 @@ def req4(name, lst1, lst2):
         elemento = lt.getElement(lst2, i)
         actores = (elemento['actor1_name'] +
          elemento['actor2_name'] + elemento['actor3_name'] +
-         elemento['actor4_name'] + elemento['actor5_name']).lower()
+         elemento['actor4_name'] + elemento['actor5_name']).lower().replace('none', '')
         if name.lower() in actores:
             nPart += 1
-            nombres.append((lt.getElement(lst1, counter))['title'])
+            nombres.append((lt.getElement(lst1, i))['title'])
             directores.append(elemento['director_name'])
             sumProm += float((lt.getElement(lst1, counter))['vote_average'])
     if nPart == 0:
@@ -205,7 +181,7 @@ def req5(lst, criteria1, column1, column2, column3):
                 counter += 1
         suma = 0
         for i in range(lt.size(votos)):
-            suma += float(lt.getElement(votos,i))
+            suma += round(float(lt.getElement(votos,i)), 2)
         t1_stop = process_time()
         tiempo = t1_stop-t1_start
         return nombres['elements'],counter,suma/lt.size(votos),tiempo
@@ -258,8 +234,22 @@ def main():
                     function2 = lessfunction
                 resultados1 = req2(listaD, function1, 'vote_count', n1)
                 resultados2 = req2(listaD, function2, 'vote_average', n2)
-                print('Por votos:\n',resultados1 )
-                print('Por promedio:\n', resultados2)
+                try:
+                    print('\nLos resultados por cantidad de votos son:')
+                    print('-' * 30)
+                    for i in range(1, len(resultados1['elements'])):
+                        data = lt.getElement(resultados1, i)
+                        print(data[0], ':', data[1])
+                except:
+                    print('Ha ocurrido un error al ingresar los parametros')
+                try:
+                    print('\nLos resultados por promedio son:')
+                    print('-' * 30)
+                    for i in range(1, len(resultados2['elements'])):
+                        data = lt.getElement(resultados2, i)
+                        print(data[0], ':', data[1])
+                except:
+                    print('Ha ocurrido un error al ingresar los parametros')
 
             elif int(inputs[0])==3: #opcion 3
                 pass
@@ -305,13 +295,22 @@ def main():
                     function2 = lessfunction
                 resultado1 = req6(listaD, genero, 'genres', function1, 'vote_count', n1)
                 resultado2 = req6(listaD, genero, 'genres', function2, 'vote_average', n2)
-                print('Por votos:\n',resultado1 )
-                print('Por promedio:\n', resultado2)
-
-            elif int(inputs[0])==7: #opcion 7
-                director = input('Ingrese el nombre del director:\n')
-                pelis = req1(listaC, listaD, director, 'director_name', 6, 'vote_average')
-                print('El director ', director, ' tiene ', pelis, ' películas buenas.')
+                try:
+                    print('\nLos resultados por cantidad de votos son:')
+                    print('-' * 30)
+                    for i in range(1, len(resultado1['elements'])):
+                        data = lt.getElement(resultado1, i)
+                        print(data[0], ':', data[1])
+                except:
+                    print('Ha ocurrido un error al ingresar los parametros')
+                try:
+                    print('\nLos resultados por promedio son:')
+                    print('-' * 30)
+                    for i in range(1, len(resultado2['elements'])):
+                        data = lt.getElement(resultado2, i)
+                        print(data[0], ':', data[1])
+                except:
+                    print('Ha ocurrido un error al ingresar los parametros')
 
             elif int(inputs[0])==0: #opcion 0, salir
                 sys.exit(0)
