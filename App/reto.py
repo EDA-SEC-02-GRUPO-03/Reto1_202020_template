@@ -204,16 +204,12 @@ def main():
         printMenu() #imprimir el menu de opciones en consola
         inputs =input('Seleccione una opción para continuar\n') #leer opción ingresada
         if len(inputs)>0:
-            if int(inputs[0])==0: #opcion 0
+            if int(inputs[0])==1: #opcion 0
                 datos = loadCSVFile("Data\AllMoviesDetailsCleaned.csv","Data\AllMoviesCastingRaw.csv") #llamar funcion cargar datos
                 listaD = datos[0]
                 listaC = datos[1]
                 print("Datos de detalles cargados, ",listaD['size']," elementos cargados")
                 print("Datos de casting cargados, ",listaC['size']," elementos cargados")
-            elif int(inputs[0])==1: 
-                director = input('Ingrese el nombre del director:\n')
-                pelis = req1(listaC, listaD, director, 'director_name', 6, 'vote_average')
-                print('El director ', director, ' tiene ', pelis, ' películas buenas.')
             elif int(inputs[0])==2:
                 gb1 = int(input('Más Votos (1) o Menos Votos (0):\n'))
                 n1 = int(input('¿Cuántas películas?\n'))
@@ -256,6 +252,10 @@ def main():
                 resultado2 = req6(listaD, genero, 'genres', function2, 'vote_average', n2)
                 print('Por votos:\n',resultado1 )
                 print('Por promedio:\n', resultado2)
+            elif int(inputs[0])==7: 
+                director = input('Ingrese el nombre del director:\n')
+                pelis = req1(listaC, listaD, director, 'director_name', 6, 'vote_average')
+                print('El director ', director, ' tiene ', pelis, ' películas buenas.')
             elif int(inputs[0])==0: #opcion 0, salir
                 sys.exit(0)
                 
