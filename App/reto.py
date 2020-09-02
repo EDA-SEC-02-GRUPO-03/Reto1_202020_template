@@ -131,6 +131,42 @@ def req2 (lst, function, criteria, n):
     print('El tiempo fue de ', t1_stop-t1_start, ' segundos')
     return final
 
+def req3_bono(nombre, lst1, lst2):
+    if lst1['size']==0 or lst2['size']==0:
+        print("La lista esta vacía")  
+        return 0
+    else:
+        t1_start = process_time() #tiempo inicial
+        n = 0
+        total_peliculas = 0
+        directores = lt.newList('ARRAY_LIST')
+        dirigida_por_director = lt.newList('ARRAY_LIST')
+        votacion = 0
+
+        for i in range(lt.size(lst2)):
+            n += 1
+            pelicula = lt.getElement(lst2, i)
+            details = lt.getElement(lst1, i)
+            lt.addLast(dirigida_por_director, pelicula['director_name'])
+            if nombre.lower() in directores:
+                total_peliculas += 1
+                lt.addLast(dirigida_por_director, details['title'])
+                votacion += details['vote_average']
+        if total_peliculas == 0:
+            t1_stop = process_time() #tiempo final
+            print("Tiempo de ejecución ",t1_stop-t1_start," segundos\n")
+            pass
+
+        else:
+            avg = votacion/total_peliculas
+            nombres_peliculas = ""
+            for i in dirigida_por_director:
+                nombres_peliculas += i + "\n"
+            informacion_director = nombre + "promedio de votacion de sus películas: " + str(avg) + "\n" + nombres_peliculas
+            t1_stop = process_time() #tiempo final
+            print("Tiempo de ejecución ",t1_stop-t1_start," segundos")
+            return informacion_director
+
 def req4(name, lst1, lst2):
     t1_start = process_time() #tiempo inicial
     counter = 0
@@ -213,7 +249,7 @@ def main():
         inputs =input('Seleccione una opción para continuar\n') #leer opción ingresada
         if len(inputs)>0:
             if int(inputs[0])==1: #opcion 1
-                datos = loadCSVFile("Data\\theMoviesdb\\AllMoviesDetailsCleaned.csv","Data\\theMoviesdb\\AllMoviesCastingRaw.csv") #llamar funcion cargar datos
+                datos = loadCSVFile("Data\AllMoviesDetailsCleaned.csv","Data\AllMoviesCastingRaw.csv") #llamar funcion cargar datos
                 listaD = datos[0]
                 listaC = datos[1]
                 print("Datos de detalles cargados, ",listaD['size']," elementos cargados")
@@ -252,7 +288,10 @@ def main():
                     print('Ha ocurrido un error al ingresar los parametros')
 
             elif int(inputs[0])==3: #opcion 3
-                pass
+                print('Este requisito es un bono')
+                nombre = input('Ingrese el nombre del director:\n')
+                retorno = req3 (nombre, listaD, listaC)
+                print (retorno)
 
             elif int(inputs[0])==4: #opcion 4
                 if listaD==None or listaD['size']==0: #obtener la longitud de la lista
