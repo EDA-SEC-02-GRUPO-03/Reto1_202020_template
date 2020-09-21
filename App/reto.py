@@ -11,7 +11,7 @@
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * (at your option) any later version
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -249,7 +249,7 @@ def main():
         inputs =input('Seleccione una opción para continuar\n') #leer opción ingresada
         if len(inputs)>0:
             if int(inputs[0])==1: #opcion 1
-                datos = loadCSVFile("Data\AllMoviesDetailsCleaned.csv","Data\AllMoviesCastingRaw.csv") #llamar funcion cargar datos
+                datos = loadCSVFile("Data\\theMoviesdb\\AllMoviesDetailsCleaned.csv","Data\\theMoviesdb\\AllMoviesCastingRaw.csv") #llamar funcion cargar datos
                 listaD = datos[0]
                 listaC = datos[1]
                 print("Datos de detalles cargados, ",listaD['size']," elementos cargados")
